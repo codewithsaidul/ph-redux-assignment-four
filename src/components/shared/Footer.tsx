@@ -28,7 +28,7 @@ const Footer = () => {
                 </ul>
             </div>
 
-            <p className="text-sm mt-10">&copy; 2025 <span className="text-book-primary font-bold">LibraLite</span>. All rights reserved. Developed by <Link to="https://codewithsaidul.com" target="_blank" className="text-book-danger hover:text-book-primary">CodeWithSaidul</Link></p>
+            <p className="text-sm mt-10">&copy; 2025 <span className="text-book-primary font-bold">LibraLite</span>. All rights reserved. Developed by <Link to="https://developer-portfolio-eta-sage.vercel.app" target="_blank" className="text-book-danger hover:text-book-primary">CodeWithSaidul</Link></p>
         </div>
     </footer>
   )
