@@ -11,10 +11,10 @@ const Hero = () => {
     >
       <div className="max-w-3xl mx-auto text-center">
         <div>
-            <h1 className="text-5xl min-[450px]:text-7xl min-sm:text-8xl min-md:text-9xl font-bold text-white">
-              10 Awesome <span className="text-book-primary">BOOKS</span>
-            </h1>
-            <p className="text-lg text-gray-200 mt-8">That Changed My Mindset</p>
+          <h1 className="text-5xl min-[450px]:text-7xl min-sm:text-8xl min-md:text-9xl font-bold text-white">
+            10 Awesome <span className="text-book-primary">BOOKS</span>
+          </h1>
+          <p className="text-lg text-gray-200 mt-8">That Changed My Mindset</p>
         </div>
       </div>
     </div>

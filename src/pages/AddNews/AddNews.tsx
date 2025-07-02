@@ -20,6 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAddBookMutation } from "@/redux/feature/books/booksAPI";
+import Swal from "sweetalert2";
+import { isAPIValidationError } from "@/utils/isAPIError";
 
 const genreEnum = z.enum([
   "FICTION",
@@ -57,18 +60,18 @@ const formSchema = z.object({
     .min(10, { message: "ISBN must be at least 10 characters." })
     .max(13, { message: "ISBN cannot be more than 13 characters." }),
   copies: z
-    .number({
+    .coerce.number({
       required_error: "Copies is required",
-      invalid_type_error: "Copies must be a integer number",
+      invalid_type_error: "Copies must be a number",
     })
-    .min(1, {
-      message: "Minimum 1 copy is required",
-    }),
+    .min(1, { message: "Copies must be at least 1" }),
+
   available: z.boolean().optional(),
 });
 
 export const AddNews = () => {
-  // 1. Define your form.
+  const [addBook] = useAddBookMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,11 +87,50 @@ export const AddNews = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // const copiesNum = parseInt(values.copies);
+    const bookData = {
+      ...values,
+      copies: values.copies,
+    };
+
+    try {
+      const res = await addBook(bookData).unwrap();
+      if (res.success && res.message === "Book has been created successfully") {
+        Swal.fire({
+          title: "Successfully",
+          text: res.message,
+          icon: "success",
+        });
+      }
+    } catch (error) {
+      if (isAPIValidationError(error)) {
+        if (error.data && error.data.error) {
+          if (error.data.error.errors) {
+            if (error.data.error.errors?.isbn?.path === "isbn") {
+              Swal.fire({
+                title: "Duplicate ISBN",
+                text: "The ISBN you entered is already used by another book. Please use a unique ISBN.",
+                icon: "warning",
+              });
+            } else if (error.data.error.errors?.copies) {
+              Swal.fire({
+                title: "Error!",
+                text: error.data.error.errors?.copies?.message,
+                icon: "warning",
+              });
+            } else {
+               Swal.fire({
+                title: "Failed!",
+                text:"Failed to add new book",
+                icon: "error",
+              });
+            }
+          }
+        }
+      }
+    }
+  };
 
   return (
     <div className="w-full mt-60 mb-20 px-4">
@@ -96,7 +138,7 @@ export const AddNews = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 w-full md:w-[70%] lg:w-[50%] mx-auto bg-white shadow-[0_0_2px_rgba(0,0,0,0.25)] px-6 py-10 rounded-xl"
+            className="space-y-8 w-full sm:w-[70%] lg:w-[50%] mx-auto bg-white shadow-[0_0_2px_rgba(0,0,0,0.25)] px-6 py-10 rounded-xl"
           >
             <h2 className="text-3xl text-book-primary font-bold text-center mb-10">
               Add New Book
@@ -110,7 +152,10 @@ export const AddNews = () => {
                   <FormItem>
                     <FormLabel className="text-xl">Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="Book Title" {...field} />
+                      <Input
+                        placeholder="e.g. Fundamental of Javascript"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -127,7 +172,7 @@ export const AddNews = () => {
                   <FormItem>
                     <FormLabel className="text-xl">Author Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Author Name" {...field} />
+                      <Input placeholder="e.g. Jhankar Mahbub" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -144,7 +189,10 @@ export const AddNews = () => {
                   <FormItem>
                     <FormLabel className="text-xl">Thumbnail URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="Thumbnail URL" {...field} />
+                      <Input
+                        placeholder="e.g. https://exmple.com/profile.png"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,7 +200,7 @@ export const AddNews = () => {
               />
             </div>
 
-            {/* book image */}
+            {/* book genre */}
             <div>
               <FormField
                 control={form.control}
@@ -193,7 +241,7 @@ export const AddNews = () => {
                   <FormItem>
                     <FormLabel className="text-xl">ISBN</FormLabel>
                     <FormControl>
-                      <Input placeholder="ISBN" {...field} />
+                      <Input placeholder="e.g. ISBN-13A40615" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -210,7 +258,7 @@ export const AddNews = () => {
                   <FormItem>
                     <FormLabel className="text-xl">Copies</FormLabel>
                     <FormControl>
-                      <Input placeholder="Book Copies" {...field} />
+                      <Input placeholder="e.g. 1, 2, 3, 4" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
