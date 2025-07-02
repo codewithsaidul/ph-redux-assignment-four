@@ -12,7 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -20,60 +19,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useAddBookMutation } from "@/redux/feature/books/booksAPI";
-import Swal from "sweetalert2";
+import { addFormSchema } from "@/schema/bookSchema.zod";
 import { isAPIValidationError } from "@/utils/isAPIError";
-
-const genreEnum = z.enum([
-  "FICTION",
-  "NON_FICTION",
-  "SCIENCE",
-  "HISTORY",
-  "BIOGRAPHY",
-  "FANTASY",
-]);
-
-const formSchema = z.object({
-  title: z.string().min(6, {
-    message: "Title must be at least 6 characters.",
-  }),
-  author: z.string().min(3, {
-    message: "Author name must be at least 3 characters.",
-  }),
-  description: z.string().min(50, {
-    message: "Description must be at least 50 characters.",
-  }),
-  thumbnail: z
-    .string({
-      required_error: "Thumbnail URL is required",
-    })
-    .min(1, { message: "Thumbnail URL is required" })
-    .url({ message: "Provide a valid url" }),
-
-  genre: genreEnum.refine((val) => !!val, {
-    message: "Genre is required",
-  }),
-  isbn: z
-    .string({
-      required_error: "ISBN number is required",
-    })
-    .min(10, { message: "ISBN must be at least 10 characters." })
-    .max(13, { message: "ISBN cannot be more than 13 characters." }),
-  copies: z
-    .coerce.number({
-      required_error: "Copies is required",
-      invalid_type_error: "Copies must be a number",
-    })
-    .min(1, { message: "Copies must be at least 1" }),
-
-  available: z.boolean().optional(),
-});
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export const AddNews = () => {
   const [addBook] = useAddBookMutation();
+  const navigate = useNavigate()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  
+  const form = useForm<z.infer<typeof addFormSchema>>({
+    resolver: zodResolver(addFormSchema),
     defaultValues: {
       title: "",
       author: "",
@@ -87,7 +46,7 @@ export const AddNews = () => {
   });
 
   // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof addFormSchema>) => {
     // const copiesNum = parseInt(values.copies);
     const bookData = {
       ...values,
@@ -102,6 +61,10 @@ export const AddNews = () => {
           text: res.message,
           icon: "success",
         });
+
+        // reseting the form
+        form.reset();
+        navigate("/")
       }
     } catch (error) {
       if (isAPIValidationError(error)) {
@@ -120,9 +83,9 @@ export const AddNews = () => {
                 icon: "warning",
               });
             } else {
-               Swal.fire({
+              Swal.fire({
                 title: "Failed!",
-                text:"Failed to add new book",
+                text: "Failed to add new book",
                 icon: "error",
               });
             }

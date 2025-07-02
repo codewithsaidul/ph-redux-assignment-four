@@ -7,9 +7,14 @@ export interface Book {
   thumbnail: string;
   copies: number;
   description: string;
+  available: boolean;
   createdAt: Date;
 }
 
+
+export interface BookProps {
+  book: Book
+}
 
 
 export interface APIErrorResponse {

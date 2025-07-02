@@ -7,12 +7,12 @@ export const booksAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
     // ========= get all books ==========================
     getBooks: builder.query({
-      query: () => "/books",
-      transformResponse: (response) => response.data,
+      query: ({ page, limit }) => `/books?page=${page}&limit=${limit}`,
+      keepUnusedDataFor: 30,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ _id }: never) => ({
+              ...result.data.map(({ _id }: never) => ({
                 type: "Books" as const,
                 id: _id,
               })),
@@ -33,8 +33,8 @@ export const booksAPI = baseAPI.injectEndpoints({
         const tempId = `temp-${Math.random().toString(36).slice(2, 9)}`;
 
         const patchResult = dispatch(
-          booksAPI.util.updateQueryData("getBooks", undefined, (draft: Book[]) => {
-            draft.unshift({
+          booksAPI.util.updateQueryData("getBooks", undefined, (draft) => {
+            draft.data.unshift({
               ...bookData,
               _id: tempId,
               createdAt: new Date(),
@@ -48,7 +48,7 @@ export const booksAPI = baseAPI.injectEndpoints({
           // Optional: Replace temp item with actual one (if _id was temporary)
           dispatch(
             booksAPI.util.updateQueryData("getBooks", undefined, (draft) => {
-              const index = draft.findIndex(
+              const index = draft.data.findIndex(
                 (book: Book) => book._id === tempId
               );
               if (index !== -1) {

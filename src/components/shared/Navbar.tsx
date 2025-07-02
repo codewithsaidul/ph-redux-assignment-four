@@ -28,12 +28,12 @@ const Navbar = () => {
         >
           <ul className="flex flex-col md:flex-row md:items-center md:gap-x-10 gap-y-10 max-md:mt-20">
             <li className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
-                "text-book-primary font-medium": pathname === "/"
+                "text-book-primary font-medium": pathname === "/books"
             })}>
               <Link to="/books">All Books</Link>
             </li>
             <li className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
-                "text-book-primary font-medium": pathname === "/books"
+                "text-book-primary font-medium": pathname === "/create-book"
             })}>
               <Link to="/create-book">Add Book</Link>
             </li>
