@@ -1,5 +1,5 @@
 import { useGetBooksQuery } from "@/redux/feature/books/booksAPI";
-import Book from "../Books/Book";
+import Book from "./Book";
 import type { Book as BookInterface } from "@/types/index.types";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
