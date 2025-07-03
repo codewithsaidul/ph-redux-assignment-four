@@ -34,8 +34,12 @@ const Book = ({ book }: BookProps) => {
           });
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      Swal.fire({
+        title: "Failed!",
+        text: "Failed to Delete a Book",
+        icon: "error",
+      });
     }
   };
 

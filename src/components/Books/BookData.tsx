@@ -66,8 +66,12 @@ const BookData = () => {
           });
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      Swal.fire({
+        title: "Failed!",
+        text: "Failed to Delete a Book",
+        icon: "error",
+      });
     }
   };
 
@@ -146,9 +150,7 @@ const BookData = () => {
       {/* ================= no book found message =========== */}
       {books.length <= 0 && (
         <div className="mt-20">
-          <p className="text-2xl font-bold text-center">
-            books not available
-          </p>
+          <p className="text-2xl font-bold text-center">books not available</p>
         </div>
       )}
 
