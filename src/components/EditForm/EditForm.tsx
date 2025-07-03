@@ -20,51 +20,53 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useAddBookMutation } from "@/redux/feature/books/booksAPI";
-import { addFormSchema } from "@/schema/bookSchema.zod";
+import { useUpdateBookMutation } from "@/redux/feature/books/booksAPI";
+import { editFormSchema } from "@/schema/bookSchema.zod";
+import type { BookProps } from "@/types/index.types";
 import { isAPIValidationError } from "@/utils/isAPIError";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-export const AddNews = () => {
-  const [addBook] = useAddBookMutation();
-  const navigate = useNavigate()
+export const EditForm = ({ book }: BookProps) => {
+  const [updateBook] = useUpdateBookMutation();
+  const navigate = useNavigate();
 
-  
-  const form = useForm<z.infer<typeof addFormSchema>>({
-    resolver: zodResolver(addFormSchema),
+  const form = useForm<z.infer<typeof editFormSchema>>({
+    resolver: zodResolver(editFormSchema),
     defaultValues: {
-      title: "",
-      author: "",
-      description: "",
-      thumbnail: "",
-      genre: "FICTION",
-      isbn: "",
-      copies: 1,
-      available: true,
+      title: book.title || "",
+      author: book.author || "",
+      description: book.description || "",
+      thumbnail: book.thumbnail || "",
+      genre: book.genre || "FICTION",
+      isbn: book.isbn || "",
+      copies: book.copies || 1,
+      available: book.available || true,
     },
   });
 
-  // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof addFormSchema>) => {
-    // const copiesNum = parseInt(values.copies);
+  // handle submit form
+  const onSubmit = async (values: z.infer<typeof editFormSchema>) => {
     const bookData = {
       ...values,
       copies: values.copies,
     };
 
     try {
-      const res = await addBook(bookData).unwrap();
-      if (res.success && res.message === "Book has been created successfully") {
+      const { data } = await updateBook({
+        bookId: book._id,
+        bookData: bookData,
+      });
+      if (
+        data.success &&
+        data.message === "Book has been updated successfully"
+      ) {
         Swal.fire({
           title: "Successfully",
-          text: res.message,
+          text: data.message,
           icon: "success",
         });
-
-        // reseting the form
-        form.reset();
-        navigate("/")
+        navigate("/books");
       }
     } catch (error) {
       if (isAPIValidationError(error)) {
@@ -104,7 +106,7 @@ export const AddNews = () => {
             className="space-y-8 w-full sm:w-[70%] lg:w-[50%] mx-auto bg-white shadow-[0_0_2px_rgba(0,0,0,0.25)] px-6 py-10 rounded-xl"
           >
             <h2 className="text-3xl text-book-primary font-bold text-center mb-10">
-              Add New Book
+              Update Book Details
             </h2>
             {/* book title */}
             <div>

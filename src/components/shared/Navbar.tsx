@@ -9,7 +9,7 @@ const Navbar = () => {
 
 
   return (
-    <header className="bg-white shadow w-full px-4 sm:px-8 md:px-16 lg:px-20 fixed top-0 left-0 right-0">
+    <header className="bg-white shadow w-full px-4 sm:px-8 md:px-16 lg:px-20 fixed top-0 left-0 right-0 z-50">
       <nav className="flex justify-between items-center">
         <Link to="/">
           <img src="/LibraLite.png" alt="libralite logo" className="max-w-96 max-h-32" />

@@ -3,11 +3,12 @@ import Book from "./Book";
 import type { Book as BookInterface } from "@/types/index.types";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { LoadingSkeleton } from "../Loading/LoadingSkeleton";
 
 const BooksSection = () => {
-  const { data, isLoading } = useGetBooksQuery({ page: 1, limit: 4 });
+  const { data, isLoading } = useGetBooksQuery({ page: 1, limit: 10 });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSkeleton />;
 
   const { data: books } = data;
 
@@ -24,7 +25,7 @@ const BooksSection = () => {
         {books.length > 0 ? (
           <div>
             <div className="grid items-center grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-10">
-              {books.map((book: BookInterface) => (
+              {books.slice(0, 4).map((book: BookInterface) => (
                 <Book key={book._id} book={book} />
               ))}
             </div>
