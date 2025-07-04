@@ -13,9 +13,58 @@ const BooksSection = () => {
   const [bookTitle, setBookTitle] = useState<string | null>(null);
   const { data, isLoading } = useGetBooksQuery({ page: 1, limit: 10 });
 
-  if (isLoading) return <LoadingSkeleton />;
+  let content = null;
 
-  const { data: books } = data;
+  if (isLoading) {
+    content = <LoadingSkeleton />;
+  } else {
+    const { data: books } = data;
+    content = (
+      <div>
+        {" "}
+        {/* books container */}
+        <div className="mt-32">
+          {books.length > 0 ? (
+            <div>
+              <div className="grid items-center grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                {books.slice(0, 4).map((book: BookInterface) => (
+                  <Book
+                    key={book._id}
+                    book={book}
+                    handleModalOpen={handleModalOpen}
+                  />
+                ))}
+              </div>
+
+              <div className="flex justify-center mt-16">
+                <Button
+                  size={"lg"}
+                  className="bg-book-primary duration-700 hover:bg-book-danger hover:duration-700 text-center"
+                >
+                  <Link to="/books">See All</Link>
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center mt-20">
+              <p className="text-2xl font-medium text-book-accent">
+                No Book found!
+              </p>
+            </div>
+          )}
+        </div>
+        {/* =========== borrow modal ================= */}
+        <div>
+          <BorrowModal
+            bookId={selectedBook}
+            bookTitle={bookTitle}
+            open={isOpen}
+            onOpenChange={setIsOpen}
+          />
+        </div>
+      </div>
+    );
+  }
 
   const handleModalOpen = (bookId: string, title: string) => {
     setIsOpen(!isOpen);
@@ -31,47 +80,7 @@ const BooksSection = () => {
         </h2>
       </div>
 
-      {/* books container */}
-      <div className="mt-32">
-        {books.length > 0 ? (
-          <div>
-            <div className="grid items-center grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-10">
-              {books.slice(0, 4).map((book: BookInterface) => (
-                <Book
-                  key={book._id}
-                  book={book}
-                  handleModalOpen={handleModalOpen}
-                />
-              ))}
-            </div>
-
-            <div className="flex justify-center mt-16">
-              <Button
-                size={"lg"}
-                className="bg-book-primary duration-700 hover:bg-book-danger hover:duration-700 text-center"
-              >
-                <Link to="/books">See All</Link>
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="flex justify-center items-center mt-20">
-            <p className="text-2xl font-medium text-book-accent">
-              No Book found!
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* =========== borrow modal ================= */}
-      <div>
-        <BorrowModal
-          bookId={selectedBook}
-          bookTitle={bookTitle}
-          open={isOpen}
-          onOpenChange={setIsOpen}
-        />
-      </div>
+      {content}
     </div>
   );
 };

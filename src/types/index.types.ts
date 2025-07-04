@@ -15,7 +15,7 @@ export interface Book {
 
 export interface BookProps {
   book: Book;
-   handleModalOpen: (bookId: string, title: string) => void;
+   handleModalOpen?: (bookId: string, title: string) => void;
 }
 
 export interface Borrow {

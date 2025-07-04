@@ -45,7 +45,7 @@ export const AddBook = () => {
     },
   });
 
-  // 2. Define a submit handler.
+  // handle submit handler
   const onSubmit = async (values: z.infer<typeof addFormSchema>) => {
     const bookData = {
       ...values,

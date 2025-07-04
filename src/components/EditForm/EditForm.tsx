@@ -256,7 +256,7 @@ export const EditForm = ({ book }: BookProps) => {
               type="submit"
               className="w-full py-6 cursor-pointer bg-book-primary text-xl duration-500 hover:bg-book-danger"
             >
-              Add Book
+              Update Book
             </Button>
           </form>
         </Form>

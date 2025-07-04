@@ -12,7 +12,7 @@ const Bookdetails = () => {
   const [bookTitle, setBookTitle] = useState<string | null>(null);
   const { data, isLoading } = useGetBookQuery(id);
 
-  if (isLoading) return <LoadingSkeleton />;
+  if (isLoading) return <div className="mt-40"><LoadingSkeleton /></div>;
 
   const { data: book } = data;
 

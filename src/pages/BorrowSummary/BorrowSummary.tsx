@@ -15,7 +15,7 @@ import { LoadingSkeleton } from "@/components/Loading/LoadingSkeleton";
 const BorrowSummary = () => {
   const { data, isLoading } = useGetBorrowSummaryQuery(undefined);
 
-  if (isLoading) return <LoadingSkeleton />;
+  if (isLoading) return <div className="mt-48"><LoadingSkeleton /></div>;
 
   const { data: borrowSummary } = data;
 
