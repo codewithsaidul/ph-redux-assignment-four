@@ -8,12 +8,14 @@ a minimal library management system made with React, Redux Toolki Query, Shadcn 
 ### 1. Git Repo
 
 Front-End: https://github.com/codewithsaidul/ph-redux-assignment-four
+<br>
 Back-End: https://github.com/codewithsaidul/ph-mongooshe-assignment-three
 
 ##
 
 ### 2. Live URL
 Live Demo Front-End: https://libralite.vercel.app
+<br>
 Live Link Back-End: https://library-management-api-beta.vercel.app
 
 
@@ -47,9 +49,13 @@ Live Link Back-End: https://library-management-api-beta.vercel.app
 
 ## 4. Bonus Features Implemented
 ```✔️  Optimistic UI Updates:``` The UI updates instantly after mutations (add, edit, delete) for a smooth user experience, while re-fetching in the background to ensure data consistency.
+<br>
 ```✔️  Toast Notifications:``` Provides clear, non-intrusive feedback for actions like successfully adding a book or confirming a borrow.
+<br>
 ```✔️ Fully Responsive Layout:``` The entire application is designed to work seamlessly on mobile, tablet, and desktop devices.
+<br>
 ```✔️ Type-Safe Forms:``` Utilizes TypeScript to ensure all form handling is fully type-safe, reducing runtime errors.
+<br>
 
 ## 
 
