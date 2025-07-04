@@ -21,24 +21,24 @@ const Navbar = () => {
             "rounded-xl flex items-center p-6 transition-transform duration-300 z-50",
             "max-md:fixed max-md:top-0 max-md:left-0 max-md:h-full max-md:w-[70%] max-md:flex-col max-md:gap-y-10",
             isOpen
-              ? "max-md:translate-x-0 bg-white shadow-2xl "
+              ? "max-md:translate-x-0 max-md:bg-white max-md:shadow-2xl"
               : "max-md:-translate-x-full",
             "md:static"
           )}
         >
           <ul className="flex flex-col md:flex-row md:items-center md:gap-x-10 gap-y-10 max-md:mt-20">
-            <li className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
+            <li onClick={() => setIsOpen(!isOpen)} className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
                 "text-book-primary font-medium": pathname === "/books"
             })}>
               <Link to="/books">All Books</Link>
             </li>
-            <li className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
+            <li onClick={() => setIsOpen(!isOpen)} className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
                 "text-book-primary font-medium": pathname === "/create-book"
             })}>
               <Link to="/create-book">Add Book</Link>
             </li>
-            <li className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
-                "text-book-primary font-medium": pathname === "/borrowSummary"
+            <li onClick={() => setIsOpen(!isOpen)} className={cn("text-xl hover:text-book-primary duration-500 hover:duration-500", {
+                "text-book-primary font-medium": pathname === "/borrow-summary"
             })}>
               <Link to="/borrow-summary">Borrow Summary</Link>
             </li>

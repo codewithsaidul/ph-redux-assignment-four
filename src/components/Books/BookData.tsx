@@ -28,7 +28,12 @@ const BookData = () => {
   const { data, isLoading } = useGetBooksQuery({ page: page, limit: 10 });
   const [deleteBook] = useDeleteBooksMutation();
 
-  if (isLoading) return <div className="mt-20"><LoadingSkeleton /></div>;
+  if (isLoading)
+    return (
+      <div className="grid grid-rows-1 md:grid-cols-3 gap-10 mt-10">
+        <LoadingSkeleton /> <LoadingSkeleton /> <LoadingSkeleton />
+      </div>
+    );
 
   const { data: books, pagination } = data;
 

@@ -24,7 +24,7 @@ const BooksSection = () => {
   let content = null;
 
   if (isLoading) {
-    content = <LoadingSkeleton />;
+    content = <div className="grid grid-rows-1 md:grid-cols-3 gap-10"><LoadingSkeleton /> <LoadingSkeleton /> <LoadingSkeleton /></div>;
   } else {
     const { data: books } = data;
     content = (

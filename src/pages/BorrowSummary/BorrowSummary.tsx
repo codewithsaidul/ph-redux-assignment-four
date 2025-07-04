@@ -15,14 +15,19 @@ import { LoadingSkeleton } from "@/components/Loading/LoadingSkeleton";
 const BorrowSummary = () => {
   const { data, isLoading } = useGetBorrowSummaryQuery(undefined);
 
-  if (isLoading) return <div className="mt-48"><LoadingSkeleton /></div>;
+  if (isLoading)
+    return (
+      <div className="grid grid-rows-1 md:grid-cols-3 gap-10 max-md:mt-32 mt-48">
+        <LoadingSkeleton /> <LoadingSkeleton /> <LoadingSkeleton />
+      </div>
+    );
 
   const { data: borrowSummary } = data;
 
   return (
     <div className="mt-48 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
-      <div className="flex justify-between items-center">
-        <h2 className="text-book-primary text-3xl min-[380px]:text-5xl">
+      <div className="flex max-[600px]:flex-col flex-row gap-2 justify-between items-center">
+        <h2 className="text-book-primary text-5xl">
           Borrow Summary
         </h2>
         <Button
