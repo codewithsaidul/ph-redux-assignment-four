@@ -5,7 +5,12 @@ import { Button } from "../ui/button";
 import { useDeleteBooksMutation } from "@/redux/feature/books/booksAPI";
 import Swal from "sweetalert2";
 
-const Book = ({ book, handleModalOpen }: BookProps) => {
+
+interface IBookProps extends BookProps {
+  handleModalOpen: (bookId: string, title: string) => void;
+}
+
+const Book = ({ book, handleModalOpen }: IBookProps) => {
   const [deleteBook] = useDeleteBooksMutation();
 
 
