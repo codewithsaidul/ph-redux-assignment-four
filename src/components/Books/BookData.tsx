@@ -115,10 +115,11 @@ const BookData = () => {
                   <Button className="cursor-pointer">View Details</Button>
                 </Link>
                 <Button
+                  disabled={!book.available}
                   onClick={() => handleModalOpen(book._id, book.title)}
                   className="cursor-pointer bg-book-accent duration-700 hover:bg-book-danger hover:duration-700 text-xl"
                 >
-                  Borrow
+                  {book.available ? "Borrow" : "Unavailable"}
                 </Button>
                 <Link to={`/edit-book/${book._id}`}>
                   <Button className="cursor-pointer bg-blue-700 duration-700 hover:bg-blue-600 hover:duration-700 text-xl">
