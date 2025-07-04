@@ -63,7 +63,7 @@ export const AddBook = () => {
 
         // reseting the form
         form.reset();
-        navigate("/")
+        navigate("/books")
       }
     } catch (error) {
       if (isAPIValidationError(error)) {

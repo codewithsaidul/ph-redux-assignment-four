@@ -25,3 +25,4 @@ dist-ssr
 *.js linguist-detectable=false
 data.json
 
+.vercel

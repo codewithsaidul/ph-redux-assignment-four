@@ -13,6 +13,14 @@ const BooksSection = () => {
   const [bookTitle, setBookTitle] = useState<string | null>(null);
   const { data, isLoading } = useGetBooksQuery({ page: 1, limit: 10 });
 
+
+  // ================== handle modal open or close
+  const handleModalOpen = (bookId: string, title: string) => {
+    setIsOpen(!isOpen);
+    setSelectedBook(bookId);
+    setBookTitle(title);
+  };
+
   let content = null;
 
   if (isLoading) {
@@ -65,12 +73,6 @@ const BooksSection = () => {
       </div>
     );
   }
-
-  const handleModalOpen = (bookId: string, title: string) => {
-    setIsOpen(!isOpen);
-    setSelectedBook(bookId);
-    setBookTitle(title);
-  };
 
   return (
     <div className="my-32">
