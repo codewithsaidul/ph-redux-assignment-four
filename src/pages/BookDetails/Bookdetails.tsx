@@ -2,14 +2,26 @@ import { LoadingSkeleton } from "@/components/Loading/LoadingSkeleton";
 import { Button } from "@/components/ui/button";
 import { useGetBookQuery } from "@/redux/feature/books/booksAPI";
 import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import BorrowModal from "@/components/BorrowModal/BorrowModal";
 
 const Bookdetails = () => {
   const { id } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState<string | null>(null);
+  const [bookTitle, setBookTitle] = useState<string | null>(null);
   const { data, isLoading } = useGetBookQuery(id);
 
   if (isLoading) return <LoadingSkeleton />;
 
   const { data: book } = data;
+
+
+  const handleModalOpen = (bookId: string, title: string) => {
+    setIsOpen(!isOpen);
+    setSelectedBook(bookId);
+    setBookTitle(title);
+  };
 
   return (
     <div className="mt-44 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
@@ -84,12 +96,23 @@ const Bookdetails = () => {
           <div className="mt-7 max-w-60">
             <Button
               disabled={!book.available}
+              onClick={() => handleModalOpen(book._id, book.title)}
               className="text-xl bg-book-primary duration-700 hover:bg-book-danger hover:duration-700 w-full"
             >
               {book.available ? "Borrow" : "Unavailable"}
             </Button>
           </div>
         </div>
+      </div>
+
+      {/* =========== borrow modal ================= */}
+      <div>
+        <BorrowModal
+          bookId={selectedBook}
+          bookTitle={bookTitle}
+          open={isOpen}
+          onOpenChange={setIsOpen}
+        />
       </div>
     </div>
   );

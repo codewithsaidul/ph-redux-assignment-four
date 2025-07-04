@@ -5,8 +5,11 @@ import { Button } from "../ui/button";
 import { useDeleteBooksMutation } from "@/redux/feature/books/booksAPI";
 import Swal from "sweetalert2";
 
-const Book = ({ book }: BookProps) => {
+const Book = ({ book, handleModalOpen }: BookProps) => {
   const [deleteBook] = useDeleteBooksMutation();
+
+
+
 
   const handleDeleteBook = async (bookId: string) => {
     const result = await Swal.fire({
@@ -71,6 +74,7 @@ const Book = ({ book }: BookProps) => {
         </Link>
         <Button
           disabled={!book.available}
+          onClick={() => handleModalOpen(book._id, book.title)}
           className="col-span-1 cursor-pointer text-lg w-full bg-book-primary duration-700 hover:bg-book-danger hover:duration-700"
         >
           {!book.available ? "Unavailable" : "Borrow"}
@@ -82,6 +86,8 @@ const Book = ({ book }: BookProps) => {
         </Link>
       </div>
 
+
+{/* ====== delete btn =========== */}
       <div
         onClick={() => handleDeleteBook(book._id)}
         className="absolute top-2 right-2 cursor-pointer text-red-500 font-bold"
